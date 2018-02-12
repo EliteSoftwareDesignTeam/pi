@@ -5,7 +5,6 @@ sudo apt-get install -y libusb-dev libdbus-1-dev libglib2.0-dev libudev-dev libi
 
 echo "Downloading and installing bluez v5.48"
 wget http://www.kernel.org/pub/linux/bluetooth/bluez-5.48.tar.xz
-rm bluez-5.37.tar.xz
 tar xvf bluez-5.48.tar.xz
 cd bluez-5.48/
 ./configure
