@@ -10,8 +10,8 @@ make install
 sudo make install
 sudo systemctl enable bluetooth
 systemctl daemon-reload
-echo "Added -C to the line containing bluetoothhd"
-read -p "Press enter when ready" null
+echo ""
+read -p "Add -C to the line containing bluetoothhd. Press enter when ready" null
 sudo nano /lib/systemd/system/bluetooth.service
 pip install pyobjc
 pip install pybluez
