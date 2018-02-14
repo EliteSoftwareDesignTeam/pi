@@ -26,3 +26,5 @@ hs_err_pid*
 \.gradle/
 
 cane-pi\.iml
+
+\.DS_Store
