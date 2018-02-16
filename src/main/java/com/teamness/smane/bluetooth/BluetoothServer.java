@@ -1,4 +1,4 @@
-package com.teamness.bluetooth;
+package com.teamness.smane.bluetooth;
 
 import com.teamness.smane.Pair;
 
