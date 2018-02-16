@@ -19,13 +19,13 @@ public class BluetoothServer<T> {
 
     public final String name;
     public final UUID uuid;
-    List<Pair<Function<String, T>, Consumer<T>>> handlers = new ArrayList<>();
-    private BufferedWriter writer;
+    private List<Pair<Function<String, T>, Consumer<T>>> handlers = new ArrayList<>();
+    private PrintWriter writer;
     private boolean connected = false;
 
     public BluetoothServer(String name, String uuid) {
         this.name = name;
-        this.uuid = UUID.fromString(uuid);
+        this.uuid = new UUID(uuid, false);
     }
 
     public void start() throws IOException {
@@ -38,7 +38,7 @@ public class BluetoothServer<T> {
                 con = conNotifier.acceptAndOpen();
                 RemoteDevice device = RemoteDevice.getRemoteDevice(con);
                 BufferedReader reader = new BufferedReader(new InputStreamReader(con.openDataInputStream()));
-                writer = new BufferedWriter(new OutputStreamWriter(con.openDataOutputStream()));
+                writer = new PrintWriter(new OutputStreamWriter(con.openDataOutputStream()));
                 connected = true;
 
                 String line;
