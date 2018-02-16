@@ -48,6 +48,7 @@ public class BluetoothServer<T> {
                 connected = false;
             } catch (IOException e) {
                 e.printStackTrace();
+                connected = false;
             }
         });
         thread.start();
@@ -58,13 +59,7 @@ public class BluetoothServer<T> {
     }
 
     public void send(String data) {
-        if(writer != null && connected) {
-            try {
-                writer.write(data);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
+        if(writer != null && isConnected()) writer.write(data);
     }
 
     public void addHandler(Function<String, T> converter, Consumer<T> handler) {
