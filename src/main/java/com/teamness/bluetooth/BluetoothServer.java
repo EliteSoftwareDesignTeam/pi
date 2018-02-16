@@ -3,13 +3,15 @@ package com.teamness.bluetooth;
 import com.teamness.smane.Pair;
 
 import javax.bluetooth.RemoteDevice;
+import javax.bluetooth.UUID;
 import javax.microedition.io.Connector;
 import javax.microedition.io.StreamConnection;
 import javax.microedition.io.StreamConnectionNotifier;
 import java.io.*;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
+import java.util.Properties;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
@@ -73,8 +75,15 @@ public class BluetoothServer<T> {
         handlers.forEach(p -> p.second.accept(p.first.apply(data)));
     }
 
-    public static void main(String[] args) {
-        BluetoothServer<String> server = new BluetoothServer<>("", "");
+    public static void main(String[] args) throws IOException {
+        URL propertiesURL = Pair.class.getClassLoader().getResource("bluetooth.properties");
+        Properties props = new Properties();
+        //props.load(propertiesURL.openStream());
+        props.setProperty("name", "CanePi");
+        props.setProperty("uuid", "94f39d297d6d437d973bfba39e49d4ee");
+        BluetoothServer<String> server = new BluetoothServer<>(props.getProperty("name"), props.getProperty("uuid"));
+        server.addHandler(Function.identity(), System.out::println);
+        server.start();
     }
 
 }
