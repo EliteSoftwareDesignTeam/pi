@@ -30,7 +30,7 @@ public class ProcessRunner<T> {
                     handle(s);
                 }
                 */
-                while (isAlive()) {
+                while (true) {
                     int bytesAvailable = is.available();
                     if(bytesAvailable <= 0) continue;
                     System.out.printf("Bytes available: %d%n", bytesAvailable);
@@ -38,7 +38,7 @@ public class ProcessRunner<T> {
                     is.read(buffer);
                     handle(buffer);
                 }
-                process.destroy();
+                //process.destroy();
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
@@ -60,8 +60,7 @@ public class ProcessRunner<T> {
 
     public static void main(String[] args) {
         ProcessRunner<String> server = new ProcessRunner<>();
-        server.addHandler(String::new, System.out::println);
-        server.start(Arrays.asList("python", "python/process_test.py"));
+
     }
 
 }
