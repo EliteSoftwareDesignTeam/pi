@@ -30,3 +30,5 @@ cane-pi\.iml
 \.DS_Store
 
 out/
+
+gradle/
