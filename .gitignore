@@ -22,3 +22,13 @@
 hs_err_pid*
 
 \.idea/
+
+\.gradle/
+
+gradle/
+
+out/
+
+\.DS_Store
+
+cane-pi\.iml
