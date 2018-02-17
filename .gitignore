@@ -25,10 +25,10 @@ hs_err_pid*
 
 \.gradle/
 
-gradle/
-
-out/
+cane-pi\.iml
 
 \.DS_Store
 
-cane-pi\.iml
+out/
+
+gradle/
