@@ -8,14 +8,23 @@ from bluetooth import *
 import threading
 import sys
 
-def output(msg):
+def put_stdout(msg):
     print msg
     sys.stdout.flush()
 
+def put_bt(msg):
+    client_sock.send(msg)
+
+def get_stdin():
+    return sys.stdin.read()
+
+def get_bt():
+    return client_sock.recv(1024)
+
 def stdin_loop():
     while True:
-        input = sys.stdin.read()
-        print input
+        input = get_stdin()
+        put_bt(input)
 
 server_sock = BluetoothSocket(RFCOMM)
 server_sock.bind(("", PORT_ANY))
@@ -32,24 +41,24 @@ advertise_service(server_sock, "SampleServer",
                   #                   protocols = [ OBEX_UUID ]
                   )
 
-output("Waiting for connection on RFCOMM channel %d" % port)
+#put_stdout("Waiting for connection on RFCOMM channel %d" % port)
 
 client_sock, client_info = server_sock.accept()
-output("Accepted connection")
+#put_stdout("Accepted connection")
 
 t1 = threading.Thread(target=stdin_loop, args=())
 t1.start()
 
 try:
     while True:
-        data = client_sock.recv(1024)
+        data = get_bt()
         if len(data) == 0: break
-        output("received [%s]" % data)
+        put_stdout(data)
 except IOError:
     pass
 
-output("disconnected")
+# put_stdout("disconnected")
 
 client_sock.close()
 server_sock.close()
-output("all done")
+# put_stdout("all done")
