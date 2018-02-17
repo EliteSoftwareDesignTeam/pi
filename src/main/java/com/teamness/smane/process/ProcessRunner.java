@@ -5,6 +5,7 @@ import com.teamness.smane.Pair;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -15,6 +16,7 @@ public class ProcessRunner<T> {
 
     private List<Pair<Function<byte[], T>, Consumer<T>>> handlers = new ArrayList<>();
     private Process process;
+    private PrintWriter writer;
 
     public void start(List<String> cmd) {
         ProcessBuilder pb = new ProcessBuilder(cmd);
@@ -30,6 +32,7 @@ public class ProcessRunner<T> {
                     handle(s);
                 }
                 */
+                writer = new PrintWriter(process.getOutputStream());
                 while (true) {
                     int bytesAvailable = is.available();
                     if(bytesAvailable <= 0) continue;
@@ -58,9 +61,8 @@ public class ProcessRunner<T> {
         handlers.forEach(p -> p.second.accept(p.first.apply(data)));
     }
 
-    public static void main(String[] args) {
-        ProcessRunner<String> server = new ProcessRunner<>();
-
+    public void send(String s) {
+        if(writer != null) writer.println(s);
     }
 
 }
