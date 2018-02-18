@@ -1,5 +1,6 @@
 package com.teamness.smane.process;
 
+import com.teamness.smane.Handleable;
 import com.teamness.smane.Pair;
 
 import java.io.BufferedReader;
@@ -12,9 +13,8 @@ import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
-public class ProcessRunner<T> {
+public class ProcessRunner<T> extends Handleable<byte[], T> {
 
-    private List<Pair<Function<byte[], T>, Consumer<T>>> handlers = new ArrayList<>();
     private Process process;
     private PrintWriter writer;
 
@@ -51,14 +51,6 @@ public class ProcessRunner<T> {
 
     private boolean isAlive() {
         return process.isAlive();
-    }
-
-    public void addHandler(Function<byte[], T> converter, Consumer<T> handler) {
-        handlers.add(new Pair<>(converter, handler));
-    }
-
-    private void handle(byte[] data) {
-        handlers.forEach(p -> p.second.accept(p.first.apply(data)));
     }
 
     public void send(String s) {
