@@ -25,13 +25,6 @@ public class ProcessRunner<T> extends Handleable<byte[], T> {
             try {
                 process = pb.start();
                 InputStream is = process.getInputStream();
-                /*
-                String s;
-                BufferedReader stdout = new BufferedReader (new InputStreamReader(p.getInputStream()));
-                while ((s = stdout.readLine()) != null) {
-                    handle(s);
-                }
-                */
                 writer = new PrintWriter(process.getOutputStream());
                 while (true) {
                     int bytesAvailable = is.available();
