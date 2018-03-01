@@ -1,0 +1,1 @@
+scp ~/repos/cane-pi/out/artifacts/cane_pi_main_jar/cane-pi_main.jar pi@192.168.0.32:cane-pi/cane-pi_main.jar

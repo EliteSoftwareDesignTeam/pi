@@ -1,0 +1,15 @@
+Manifest-Version: 1.0
+Main-Class: com.teamness.smane.Main
+Implementation-Version: 2.1.1-SNAPSHOT
+Build-Platform: i386 Linux 2.6.30.10-105.2.23.fc11.i686.PAE
+Archiver-Version: Plexus Archiver
+Built-By: cruisecontrol
+Specification-Vendor: JCP
+Specification-Title: JSR-82
+Description: BlueCove JSR-82 implementation
+License: The Apache Software License, Version 2.0
+Implementation-Build: 2.1.1-SNAPSHOT.62
+Created-By: Apache Maven
+Implementation-URL: http://www.bluecove.org/
+Specification-Version: 1.1.1
+Build-Jdk: 1.6.0_18-b07
