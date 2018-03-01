@@ -18,6 +18,10 @@ public class ProcessRunner<T> {
     private Process process;
     private PrintWriter writer;
 
+    public void start(String... cmd) {
+        start(Arrays.asList(cmd));
+    }
+
     public void start(List<String> cmd) {
         ProcessBuilder pb = new ProcessBuilder(cmd);
         pb.redirectErrorStream(true);
@@ -62,7 +66,10 @@ public class ProcessRunner<T> {
     }
 
     public void send(String s) {
-        if(writer != null) writer.println(s);
+        if(writer != null) {
+            writer.println(s);
+            writer.flush();
+        } else System.out.println("writer == null");
     }
 
 }
