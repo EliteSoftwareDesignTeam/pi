@@ -1,12 +1,10 @@
 package com.teamness.smane.process;
 
 import com.teamness.smane.Handleable;
+import com.teamness.smane.Handler;
 import com.teamness.smane.Pair;
 
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -18,9 +16,12 @@ public class ProcessRunner<T> extends Handleable<byte[], T> {
     private Process process;
     private PrintWriter writer;
 
+    private Handler<String> errHandler;
+    private boolean redirectError = false;
+
     public void start(List<String> cmd) {
         ProcessBuilder pb = new ProcessBuilder(cmd);
-        pb.redirectErrorStream(true);
+        if(redirectError) pb.redirectErrorStream(true);
         Thread thread = new Thread(() -> {
             try {
                 process = pb.start();
@@ -39,6 +40,28 @@ public class ProcessRunner<T> extends Handleable<byte[], T> {
             }
         });
         thread.start();
+
+        if(errHandler != null && !redirectError) {
+            Thread errThread = new Thread(() -> {
+                InputStream is = process.getErrorStream();
+                while (true) {
+                    try {
+                        int bytesAvailable = is.available();
+                        if (bytesAvailable <= 0) continue;
+                        byte[] buffer = new byte[bytesAvailable];
+                        is.read(buffer);
+                        errHandler.handle(new String(buffer));
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+            errThread.start();
+        }
+    }
+
+    public void setErrHandler(Handler<String> errHandler) {
+        this.errHandler = errHandler;
     }
 
     private boolean isAlive() {
@@ -52,4 +75,11 @@ public class ProcessRunner<T> extends Handleable<byte[], T> {
         }
     }
 
+    public boolean isRedirectingError() {
+        return redirectError;
+    }
+
+    public void setRedirectError(boolean redirectError) {
+        this.redirectError = redirectError;
+    }
 }
