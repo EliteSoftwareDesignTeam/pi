@@ -19,7 +19,7 @@ public class ProcessRunner<T> extends Handleable<byte[], T> {
     private Handler<String> errHandler;
     private boolean redirectError = false;
 
-    public void start(List<String> cmd) {
+    public void start(List<String> cmd) throws IOException {
         ProcessBuilder pb = new ProcessBuilder(cmd);
         if(redirectError) pb.redirectErrorStream(true);
         Thread thread = new Thread(() -> {
