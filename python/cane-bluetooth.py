@@ -7,17 +7,18 @@
 from bluetooth import *
 import threading
 import sys
+from __future__ import print_function
 
 def put_stdout(msg):
-    print msg
+    print(msg)
     sys.stdout.flush()
 
 def put_stderr(msg):
-    sys.stderr.write(msg)
+    print(msg, file=sys.stderr)
     sys.stderr.flush()
 
 def put_bt(msg):
-    put_stdout("Sending %s" % msg)
+    put_stderr("Sending %s" % msg)
     client_sock.send(msg)
     client_sock.flush()
 
@@ -30,7 +31,7 @@ def get_bt():
 def stdin_loop():
     while True:
         input = get_stdin()
-        put_stderr(input)
+        #put_stderr(input)
         put_bt(input)
 
 server_sock = BluetoothSocket(RFCOMM)
@@ -47,10 +48,10 @@ advertise_service(server_sock, "SampleServer",
                   profiles=[SERIAL_PORT_PROFILE]
                   )
 
-put_stderr("Waiting for connection on RFCOMM channel %d" % 1)
+#put_stderr("Waiting for connection on RFCOMM channel %d" % 1)
 
 client_sock, client_info = server_sock.accept()
-put_stderr("Accepted connection")
+#put_stderr("Accepted connection")
 
 t1 = threading.Thread(target=stdin_loop, args=())
 t1.start()
@@ -63,7 +64,7 @@ try:
 except IOError:
     pass
 
-put_stderr("Disconnected")
+#put_stderr("Disconnected")
 
 client_sock.close()
 server_sock.close()
