@@ -12,11 +12,17 @@ def put_stdout(msg):
     print msg
     sys.stdout.flush()
 
+def put_stderr(msg):
+    print >> sys.stderr, msg
+    sys.stderr.flush()
+
 def put_bt(msg):
+    put_stdout("Sending %s" % msg)
     client_sock.send(msg)
+    client_sock.flush()
 
 def get_stdin():
-    return sys.stdin.read()
+    return sys.stdin.readline()
 
 def get_bt():
     return client_sock.recv(1024)
@@ -24,6 +30,7 @@ def get_bt():
 def stdin_loop():
     while True:
         input = get_stdin()
+        put_stderr(input)
         put_bt(input)
 
 server_sock = BluetoothSocket(RFCOMM)
@@ -37,14 +44,13 @@ uuid = "94f39d29-7d6d-437d-973b-fba39e49d4ee"
 advertise_service(server_sock, "SampleServer",
                   service_id=uuid,
                   service_classes=[uuid, SERIAL_PORT_CLASS],
-                  profiles=[SERIAL_PORT_PROFILE],
-                  #                   protocols = [ OBEX_UUID ]
+                  profiles=[SERIAL_PORT_PROFILE]
                   )
 
-#put_stdout("Waiting for connection on RFCOMM channel %d" % port)
+put_stderr("Waiting for connection on RFCOMM channel %d" % 1)
 
 client_sock, client_info = server_sock.accept()
-#put_stdout("Accepted connection")
+put_stderr("Accepted connection")
 
 t1 = threading.Thread(target=stdin_loop, args=())
 t1.start()
@@ -57,8 +63,7 @@ try:
 except IOError:
     pass
 
-# put_stdout("disconnected")
+put_stderr("Disconnected")
 
 client_sock.close()
 server_sock.close()
-# put_stdout("all done")
