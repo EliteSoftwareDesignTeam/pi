@@ -1,5 +1,6 @@
 package com.teamness.smane;
 
+import com.teamness.smane.event.CaneEvents;
 import com.teamness.smane.event.Event;
 import com.teamness.smane.event.EventChannel;
 import com.teamness.smane.process.ProcessRunner;
@@ -9,7 +10,6 @@ import java.util.Arrays;
 
 public class Main {
 
-    public static EventChannel localEvents = new EventChannel(), bluetoothEvents = new EventChannel(), allEvents = new EventChannel(EventChannel.EventPriority.MEDIUM, EventChannel.EventPriority.HIGH, localEvents, bluetoothEvents);
     private static ProcessRunner<Event> btServer;
 
     public static void main(String[] args) {
@@ -25,7 +25,7 @@ public class Main {
             return null;
         }, Main::receiveEvent);
         btServer.start(Arrays.asList("sudo", "python", "python/cane-bluetooth.py"));
-        bluetoothEvents.onAny(EventChannel.EventPriority.HIGH, "sendEvent", null);
+        CaneEvents.BT_OUT.onAny(EventChannel.EventPriority.HIGH, "sendEvent", Main.class);
     }
 
     public static void sendEvent(Event e) throws IOException {
@@ -33,9 +33,7 @@ public class Main {
     }
 
     public static void receiveEvent(Event e) {
-        bluetoothEvents.trigger(e);
+        CaneEvents.BT_IN.trigger(e);
     }
-
-
 
 }
