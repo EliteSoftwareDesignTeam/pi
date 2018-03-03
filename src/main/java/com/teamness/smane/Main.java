@@ -44,12 +44,10 @@ public class Main {
     }
 
     public static void sendEvent(Event e) throws IOException {
-        System.out.println("Sending");
         btServer.send(Serialisation.fromObject(e));
     }
 
     public static void receiveEvent(Event e) {
-        System.out.printf("Got event %s%n", e);
         CaneEvents.BT_IN.trigger(e);
     }
 
