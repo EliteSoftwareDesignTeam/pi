@@ -46,7 +46,10 @@ public class ProcessRunner<T> extends Handleable<byte[], T> {
     }
 
     public void send(String s) {
-        if(writer != null) writer.println(s);
+        if(writer != null) {
+            writer.println(s);
+            writer.flush();
+        }
     }
 
 }
