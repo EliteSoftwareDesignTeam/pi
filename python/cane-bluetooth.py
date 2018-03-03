@@ -31,7 +31,7 @@ def get_bt():
 def stdin_loop():
     while True:
         input = get_stdin()
-        #put_stderr(input)
+        put_stderr(input)
         put_bt(input)
 
 server_sock = BluetoothSocket(RFCOMM)
@@ -48,10 +48,10 @@ advertise_service(server_sock, "SampleServer",
                   profiles=[SERIAL_PORT_PROFILE]
                   )
 
-#put_stderr("Waiting for connection on RFCOMM channel %d" % 1)
+put_stderr("Waiting for connection on RFCOMM channel %d" % 1)
 
 client_sock, client_info = server_sock.accept()
-#put_stderr("Accepted connection")
+put_stderr("Accepted connection")
 
 t1 = threading.Thread(target=stdin_loop, args=())
 t1.start()
@@ -64,7 +64,7 @@ try:
 except IOError:
     pass
 
-#put_stderr("Disconnected")
+put_stderr("Disconnected")
 
 client_sock.close()
 server_sock.close()
