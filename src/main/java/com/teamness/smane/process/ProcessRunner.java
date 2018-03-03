@@ -22,9 +22,9 @@ public class ProcessRunner<T> extends Handleable<byte[], T> {
     public void start(List<String> cmd) throws IOException {
         ProcessBuilder pb = new ProcessBuilder(cmd);
         if(redirectError) pb.redirectErrorStream(true);
+        process = pb.start();
         Thread thread = new Thread(() -> {
             try {
-                process = pb.start();
                 InputStream is = process.getInputStream();
                 writer = new PrintWriter(process.getOutputStream());
                 while (true) {
