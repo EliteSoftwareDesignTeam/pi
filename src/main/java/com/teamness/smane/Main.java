@@ -7,12 +7,24 @@ import com.teamness.smane.process.ProcessRunner;
 
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.Base64;
 
 public class Main {
 
     private static ProcessRunner<Event> btServer;
 
     public static void main(String[] args) {
+        Serialisation.base64Provider = new Base64Provider() {
+            @Override
+            public byte[] decode(String base64Str) {
+                return Base64.getDecoder().decode(base64Str);
+            }
+
+            @Override
+            public String encode(byte[] bytes) {
+                return Base64.getEncoder().encodeToString(bytes);
+            }
+        };
         btServer = new ProcessRunner<>();
         btServer.addHandler(b -> {
             String str = new String(b);
