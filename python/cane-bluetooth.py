@@ -13,7 +13,7 @@ def put_stdout(msg):
     sys.stdout.flush()
 
 def put_stderr(msg):
-    print >> sys.stderr, msg
+    sys.stderr.write(msg + "\n")
     sys.stderr.flush()
 
 def put_bt(msg):
