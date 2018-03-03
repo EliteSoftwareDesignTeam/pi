@@ -15,8 +15,10 @@ public class Main {
     public static void main(String[] args) {
         btServer = new ProcessRunner<>();
         btServer.addHandler(b -> {
+            String str = new String(b);
+            if(str.charAt(str.length()-1) == '\n') str = str.substring(0, str.length()-1);
             try {
-                return (Event) Serialisation.toObject(new String(b));
+                return (Event) Serialisation.toObject(str);
             } catch (IOException | ClassNotFoundException e) {
                 e.printStackTrace();
             }
