@@ -29,7 +29,6 @@ public class ProcessRunner<T> extends Handleable<byte[], T> {
                 while (true) {
                     int bytesAvailable = is.available();
                     if(bytesAvailable <= 0) continue;
-                    System.out.printf("Bytes available: %d%n", bytesAvailable);
                     byte[] buffer = new byte[bytesAvailable];
                     is.read(buffer);
                     handle(buffer);
