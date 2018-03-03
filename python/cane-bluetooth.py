@@ -7,13 +7,14 @@
 from bluetooth import *
 import threading
 import sys
+from __future__ import print_function
 
 def put_stdout(msg):
     print msg
     sys.stdout.flush()
 
 def put_stderr(msg):
-    print >> sys.stderr, msg
+    print(msg, file=sys.stderr)
     sys.stderr.flush()
 
 def put_bt(msg):
