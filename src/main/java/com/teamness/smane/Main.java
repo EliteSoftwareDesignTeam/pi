@@ -14,7 +14,7 @@ public class Main {
 
     private static ProcessRunner<Event> btServer;
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         Serialisation.base64Provider = new Base64Provider() {
             @Override
             public byte[] decode(String base64Str) {
