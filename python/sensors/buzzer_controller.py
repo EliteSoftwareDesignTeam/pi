@@ -36,6 +36,3 @@ while line:
         except ValueError:
                 print("Time must be an int")
         line = sys.stdin.readline()
-
-#for line in sys.stdin:
-#       print line
