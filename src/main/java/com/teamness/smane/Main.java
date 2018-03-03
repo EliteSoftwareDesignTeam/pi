@@ -29,8 +29,7 @@ public class Main {
         btServer = new ProcessRunner<>();
         btServer.addHandler(b -> {
             String str = new String(b);
-            System.out.printf("Got %s from pi%n", str);
-            if(str.charAt(str.length()-1) == '\n') str = str.substring(0, str.length()-1);
+            while(str.charAt(str.length()-1) == '\n') str = str.substring(0, str.length()-1);
             try {
                 return (Event) Serialisation.toObject(str);
             } catch (IOException | ClassNotFoundException e) {
