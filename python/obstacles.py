@@ -1,44 +1,37 @@
 import RPi.GPIO as GPIO
 import time
-import sys
-
-def delay_microseconds(micros):
-    time.sleep(0.000001 * micros)
-
-def delay_milliseconds(millis):
-    delay_microseconds(1000 * millis)
-
-def microseconds_to_cm(micros):
-    return micros * 100 / 5882
-
 GPIO.setmode(GPIO.BCM)
-ECHO_PIN = 4
-TRIGGER_PIN = 17
-GPIO.setup(ECHO_PIN, GPIO.IN)
-GPIO.setup(TRIGGER_PIN, GPIO.OUT)
 
-def pulse_in(pin, val):
-    while GPIO.input(pin) != val:
-        continue
-    start = time.time()
-    while GPIO.input(pin) == val:
-        continue
-    return (time.time() - start) / 1000000
+TRIG = 17
+ECHO = 4
 
-line = sys.stdin.readline()
-while line:
-    #if line == "get_distance":
-    print "getting distance"
-    GPIO.output(TRIGGER_PIN, GPIO.LOW)
-    delay_microseconds(2)
-    print "triggering"
-    GPIO.output(TRIGGER_PIN, GPIO.HIGH)
-    delay_microseconds(10)
-    GPIO.output(TRIGGER_PIN, GPIO.LOW)
-    delay_microseconds(2)
-    print "triggered"
-    duration = pulse_in(ECHO_PIN, GPIO.HIGH)
-    centimetres = microseconds_to_cm(duration)
-    print centimetres
-    delay_milliseconds(1000)
-    #line = sys.stdin.readline()
+print "Distance measurement in progress"
+
+GPIO.setup(TRIG,GPIO.OUT)
+GPIO.setup(ECHO,GPIO.IN)
+
+while True:
+
+    GPIO.output(TRIG, False)
+    print "Waitng For Sensor To Settle"
+    time.sleep(2)
+
+    GPIO.output(TRIG, True)
+    time.sleep(0.00001)
+    GPIO.output(TRIG, False)
+
+    while GPIO.input(ECHO)==0:
+        pulse_start = time.time()
+
+    while GPIO.input(ECHO)==1:
+        pulse_end = time.time()
+
+    pulse_duration = pulse_end - pulse_start
+
+    distance = pulse_duration * 17150
+    distance = round(distance, 2)
+
+    if distance > 2 and distance < 400:
+        print "Distance:",distance - 0.5,"cm"
+    else:
+        print "Out Of Range"
