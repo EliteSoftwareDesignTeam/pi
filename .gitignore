@@ -32,3 +32,5 @@ cane-pi\.iml
 out/
 
 gradle/
+
+src/shared
