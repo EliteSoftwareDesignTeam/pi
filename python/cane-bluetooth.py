@@ -13,8 +13,8 @@ def put_stdout(msg):
     sys.stdout.flush()
 
 def put_stderr(msg):
-    #sys.stderr.write(msg + "\n")
-    #sys.stderr.flush()
+    sys.stderr.write(msg + "\n")
+    sys.stderr.flush()
     pass
 
 def put_bt(msg):
