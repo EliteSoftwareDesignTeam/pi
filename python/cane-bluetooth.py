@@ -20,7 +20,6 @@ def put_stderr(msg):
 def put_bt(msg):
     put_stderr("Sending %s" % msg)
     client_sock.send(msg)
-    client_sock.flush()
 
 def get_stdin():
     return sys.stdin.readline()

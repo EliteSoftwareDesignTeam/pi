@@ -42,9 +42,18 @@ public class Main {
             return null;
         }, Main::receiveEvent);
         btServer.setRedirectError(false);
-        btServer.setErrHandler(s -> System.out.printf("Got error from pi: %s%n", s));
-        btServer.start(Arrays.asList("sudo", "python", "python/cane-bluetooth.py"));
+        btServer.setErrHandler(s -> {
+            System.out.printf("Got error from pi: %s%n", s);
+            if(s.contains("Accepted")) {
+                try {
+                    sendEvent(new ButtonEvent(ButtonEvent.ButtonAction.PRESSED));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
         CaneEvents.BT_OUT.onAny(EventChannel.EventPriority.HIGH, "sendEvent", Main.class);
+        btServer.start(Arrays.asList("sudo", "python", "python/cane-bluetooth.py"));
 
         buzzers.init();
         CaneEvents.BT_IN.on(BuzzerEvent.class, "buzz", Main.class);
