@@ -9,6 +9,7 @@ import com.teamness.smane.process.ProcessRunner;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Base64;
+import java.util.function.Function;
 
 public class Main {
 
@@ -52,7 +53,7 @@ public class Main {
         getDistance(null);
 
         button.init();
-        button.addHandler(Converter.identity, s -> CaneEvents.LOCAL.trigger(new ButtonEvent(ButtonEvent.ButtonAction.PRESSED)));
+        button.addHandler(Converter.identity(), s -> CaneEvents.BT_OUT.trigger(new ButtonEvent(ButtonEvent.ButtonAction.PRESSED)));
     }
 
     private static void getDistance(DistanceEvent event) {
