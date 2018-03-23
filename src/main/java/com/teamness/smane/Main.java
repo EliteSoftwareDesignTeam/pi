@@ -50,10 +50,15 @@ public class Main {
         CaneEvents.BT_IN.on(BuzzerEvent.class, "buzz", Main.class);
 
         CaneEvents.LOCAL.on(EventChannel.EventPriority.LOW, DistanceEvent.class, "getDistance", Main.class);
-        getDistance(null);
+        //getDistance(null);
 
         button.init();
-        button.addHandler(Converter.identity(), s -> CaneEvents.BT_OUT.trigger(new ButtonEvent(ButtonEvent.ButtonAction.PRESSED)));
+        button.addHandler(new Converter<String, String>() {
+            @Override
+            public String convert(String t) {
+                return t;
+            }
+        }, s -> CaneEvents.BT_OUT.trigger(new ButtonEvent(ButtonEvent.ButtonAction.PRESSED)));
     }
 
     private static void getDistance(DistanceEvent event) {
